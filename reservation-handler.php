@@ -1,29 +1,69 @@
 <?php
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $arrivalDate = $_POST['arrival-date'];
-    $departureDate = $_POST['departure-date'];
-    $guests = $_POST['guests'];
-    $name = $_POST['name'];
-    $email = $_POST['email'];
+session_start();
+require_once("controleur/controleur_class.php");
 
-    // Email configuration
-    $to = "zakaria.belkhenfar17@gmail.com";
-    $subject = "Nouvelle réservation pour Hôtel Tiznit";
-    $headers = "From: noreply@hoteltiznit.com" . "\r\n" .
-               "Reply-To: $email" . "\r\n" .
-               "Content-Type: text/plain; charset=UTF-8";
+$unControleur = new Controleur();
+?>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Votre Garage</title>
+<link rel="stylesheet" href="css/site.css">
+</head>
+<body>
 
-    $message = "Détails de la réservation :\n\n";
-    $message .= "Nom : $name\n";
-    $message .= "Email : $email\n";
-    $message .= "Date d'arrivée : $arrivalDate\n";
-    $message .= "Date de départ : $departureDate\n";
-    $message .= "Nombre de personnes : $guests\n";
+<header>Votre Garage</header>
 
-    if (mail($to, $subject, $message, $headers)) {
-        echo "Votre réservation a été envoyée avec succès.";
-    } else {
-        echo "Erreur lors de l'envoi de votre réservation. Veuillez réessayer.";
+<nav>
+   <img src="images/concept_auto.png" alt="" >
+
+   <a href="index.php?page=2"><h1>Nous</h1></a>
+
+    <a href="index.php?page=1"><h1>Nos Annonces</h1></a>
+
+    <!-- <a href="index.php?page=2"><h1>Notre Garage</h1></a>
+    
+    <a href="index.php?page=3"><h1>Nos Recommandations</h1></a> -->
+
+    <?php 
+    if(isset($_SESSION["email"]))
+    {
+        echo '<a href="index.php?page=4"><h1>Favoris</h1></a>';
+
+    }
+    ?>
+
+    <a href="index.php?page=5"><h1>Compte</h1></a>
+
+    
+    
+</nav>
+
+
+<?php
+    
+
+if (isset($_GET["page"]))
+{
+    $page=$_GET["page"];
+    switch ($page){
+
+        case 1 : require_once("gestion/annonces.php");break;
+        case 2 : require_once("Nous.php");break;
+       
+        case 4 : require_once("gestion/gestion_favoris.php");break;
+
+        case 5 : require_once("gestion/connexion_inscription.php");break;
+        case 6 : require_once("affiche_annonce.php");break;
+
+        
+
+        
     }
 }
 ?>
+    
+</body>
+</html>
